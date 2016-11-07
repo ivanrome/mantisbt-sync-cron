@@ -7,7 +7,7 @@ The following environment variables must be provided :
 
 * BASE_URL=http://mantisbt-sync-core:8080/batch
 * SCHEDULE : based on [robfig/cron](https://github.com/robfig/cron) syntax. See [here](https://github.com/robfig/cron/blob/master/doc.go)
-* COMMAND=/mantis-sync-cron/tasks.sh <job>, where <job> is one of : syncEnumsJob, syncProjectsJob, syncIssuesJob
+* COMMAND=/mantis-sync-cron/tasks.sh <job>, where <job> is one of : syncEnumsJob, syncProjectsJob, syncIssuesJob, handlersStatJob
 * MANTIS_USERNAME : user name used to connect to MantisBT. Left it empty if anonymous access is used
 * MANTIS_PASSWORD : password used to connect to MantisBT. Left it empty if anonymous access is used
 * MANTIS\_PROJECT_ID : MantisBT project id

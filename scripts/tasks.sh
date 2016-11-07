@@ -16,14 +16,16 @@ function checkVariables {
 		echo "[INFO] Projects sync job will be launched"
 	elif [ "syncIssuesJob" = $OPERATION ]; then
 		echo "[INFO] Issues sync job will be launched"
+	elif [ "handlersStatJob" = $OPERATION ]; then
+		echo "[INFO] Handlers stats computation job will be launched"
 	else
 		echo "[ERROR] Operation not recognized : $OPERATION"
-		echo "[ERROR] Should be one of syncEnumsJob, syncProjectsJob or syncIssuesJob"
+		echo "[ERROR] Should be one of syncEnumsJob, syncProjectsJob, syncIssuesJob or handlersStatJob"
 		exit 1
 	fi
 }
 
-function lauchSyncEnums {
+function launchSyncEnums {
 
 	echo "[INFO] Launch syncEnumsJob with parameters username=$MANTIS_USERNAME"
 
@@ -31,7 +33,7 @@ function lauchSyncEnums {
 
 }
 
-function lauchSyncProjects {
+function launchSyncProjects {
 
 	echo "[INFO] Launch syncProjectsJob with parameters username=$MANTIS_USERNAME, project_id=$MANTIS_PROJECT_ID"
 
@@ -39,7 +41,7 @@ function lauchSyncProjects {
 
 }
 
-function lauchSyncIssues {
+function launchSyncIssues {
 
 	echo "[INFO] Launch syncIssuesJob with parameters username=$MANTIS_USERNAME, project_id=$MANTIS_PROJECT_ID"
 
@@ -47,18 +49,29 @@ function lauchSyncIssues {
 
 }
 
-function lauchOperation {
+function launchHandlersStat {
+
+	COMPUTE_DATE=`date +"%FT%T"`
+	echo "[INFO] Launch handlersStatJob with parameter date=$COMPUTE_DATE"
+
+	curl --silent --show-error -X POST "$BASE_URL/operations/jobs/handlersStatJob" --data "jobParameters=mantis.computeDate=$COMPUTE_DATE"; echo;
+
+}
+
+function launchOperation {
 
 	if [ "syncEnumsJob" = $OPERATION ]; then
-		lauchSyncEnums
+		launchSyncEnums
 	elif [ "syncProjectsJob" = $OPERATION ]; then
-		lauchSyncProjects
+		launchSyncProjects
 	elif [ "syncIssuesJob" = $OPERATION ]; then
-		lauchSyncIssues
+		launchSyncIssues
+	elif [ "handlersStatJob" = $OPERATION ]; then
+		launchHandlersStat
 	fi
 }
 
 OPERATION=$1
 
 checkVariables
-lauchOperation
+launchOperation
